@@ -1,6 +1,6 @@
-const loginForm = document.getElementById("login-form");
-const loginInput = document.querySelector("#login-form input");
-const loginButton = document.querySelector("#login-form button");
+// const loginForm = document.getElementById("login-form");
+// const loginInput = document.querySelector("#login-form input");
+const loginButton = document.querySelector("#login-form input:last-child");
 
 function onLoginBtnClick() {
 	//dir로 특정 태그를 콘솔에 찍으면 그 태그의 내부를 보여줌
@@ -63,5 +63,6 @@ if (savedUsername == null) {
 	loginForm.addEventListener("submit", onLoginSubmit);
 } else {
 	// show the greeting
+	loginForm.classList.add(HIDDEN_CLASSNAME);
 	paintGreetings(savedUsername);
 }
