@@ -8,6 +8,15 @@ const loginButton = document.querySelector("#login-form button");
 
 const link = document.querySelector("a");
 
+const greeting = document.querySelector("#greeting");
+
+//일반적으로 string만 포함된 변수는 대문자로 표기
+const HIDDEN_CLASSNAME = "hidden";
+const USERNAME_KEY = "username";
+
+const username = loginInput.value;
+
+
 function onLoginBtnClick() {
 	//console.dir(loginInput); //input 태그 안에 들어가는 속성들(예: value, type, placeholder, ...)과 각 속성에 현재 지정되어 있는 값들을 보여줌
 
@@ -15,7 +24,6 @@ function onLoginBtnClick() {
 
 	//console.log("click!");
 
-	// -------------------------------------------------------
 	// ** validation(유효성 검사)
 	// 1) input창에는 반드시 뭔가를 입력해야 함 (필수입력항목)
 	// 2) input창의 내용이 너무 길면 안됨
@@ -40,13 +48,26 @@ function onLoginBtnClick() {
 	//	=> 개발자의 할 일: 브라우저가 새로고침하지 않고 user 정보를 저장하게 함
 }
 
-//------------------------------------------------------------------------------
-
 //click의 event와 submit의 event는 다름
 //addEventListener로 함수 실행하면 js(브라우저)가 함수를 실행해주고
 //함수에 파라미터로 공간 만들어주면 거기에 event에 대한 정보도 담아줌(이 중에는 함수도 있음)
 function onLoginSubmit(event) {
 	event.preventDefault(); //event의 preventDefault() 함수 호출
+
+	loginForm.classList.add(HIDDEN_CLASSNAME);
+	const username = loginInput.value;
+	console.log(username);
+
+	//submit 하면 localStorage에 username 저장
+	localStorage.setItem(USERNAME_KEY, username);
+
+	paintGreetings(username);
+}
+
+function paintGreetings(username) {
+	// greeting.innerText = "Hello " + username; //간격 기억해야 하고 불편
+	greeting.innerText = `Hello ${username}`; //더 많이 쓰는 방법
+	greeting.classList.remove(HIDDEN_CLASSNAME);
 }
 
 function handleLinkClick(event) {
@@ -65,8 +86,22 @@ function handleLinkClick(event) {
 // '()'가 없으면 js(브라우저)가 명령에 맞춰 함수 실행함 (: submit 시 실행)
 //	=> addEventListener 안에 있는 함수는 직접 실행하지 않는다.
 // loginButton.addEventListener("submit", onLoginBtnClick());
-loginButton.addEventListener("submit", onLoginBtnClick);
+// loginButton.addEventListener("submit", onLoginBtnClick);
+
 
 link.addEventListener("click", handleLinkClick);
 
-//------------------------------------------------------------------------
+// localStorage에 저장된 username 불러오기
+const savedUsername = localStorage.getItem(USERNAME_KEY);
+console.log(savedUsername);
+
+// 저장된 username이 없으면
+if (savedUsername === null) {
+	//form을 보여주고
+	loginForm.classList.remove(HIDDEN_CLASSNAME);
+	//submit 시 submit 함수 실행 (setItem + greeting 보여주기)
+	loginForm.addEventListener("submit", onLoginSubmit);
+	//저장된 username이 이미 있으면
+} else {
+	paintGreetings(savedUsername);
+}
