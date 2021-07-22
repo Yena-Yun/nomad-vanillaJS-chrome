@@ -3,6 +3,18 @@ const toDoForm = document.getElementById("todo-form");
 const toDoInput = toDoForm.querySelector("input");
 const toDoList = document.getElementById("todo-list");
 
+const toDos = [];
+
+//saveTodos가 하는 일은 단 한 가지: toDos 배열을 localStorage에 저장하는 것
+function saveTodos() {
+	localStorage.setItem("todos", JSON.stringify(toDos)); //(', ' 따로 추가하지 않아도 자동으로 붙어서 저장됨 - 단, 띄어쓰기는 안 해줌)
+	//문제: localStorage는 배열이 아닌 텍스트만 저장 가능
+	//		하지만 이렇게 하면 todo 리스트의 의미가 없음 (배열로 저장하는 게 적절)
+
+	// const player = {name: "nico"}
+	// JSON.stringify(player): 문자열이 아닌 것들(배열, 객체 등)을 문자열로 변환
+}
+
 function deleteTodo(event) {
 	//event(누르는 행위)의 target(눌러진 것, button) 
 	//	=> 어떤 것의 button이 눌러졌는지(= 부모 node인 li가 어떤 것인지)를 알아야 함 
@@ -28,18 +40,14 @@ function paintTodo(newTodo) {
 	toDoList.appendChild(li);
 }
 
-const savedTodo = [];
-function saveTodo(newTodo) {
-	savedTodo.push(newTodo);
-	localStorage.setItem("todo", savedTodo);
-}
-
 function handleTodoSubmit(event) {
 	event.preventDefault();
 	const newTodo = toDoInput.value;
 	toDoInput.value = "";
+	//맨 위 전역에서 선언한 빈 배열 toDos에 newTodo 텍스트를 push해서 추가한다.
+	toDos.push(newTodo);
 	paintTodo(newTodo);
-	saveTodo(newTodo);
+	saveTodos();
 }
 
 //전역 공간
