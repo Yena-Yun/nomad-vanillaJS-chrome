@@ -6,11 +6,12 @@ function sayHello() {
 }
 
 function getClock() {
+	//새로운 날짜 객체를 만든다.
 	const date = new Date();
 
 	//console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`);
 	//	=> 콘솔이 아닌 DOM의 innerText에 넣으면 화면에 찍힘
-	//		(이때는 한 줄에 시간이 하나씩 뜨는 게 아니라 진짜 시계처럼 보여짐)
+	//		(한 줄에 시간이 하나씩 뜨는 게 아니라 진짜 시계처럼 보여짐)
 	// ** 한 자리 숫자들 앞에 0 붙여주기 (string.padStart(원하는 자릿수, 채울 문자열))
 	// "1".padStart(2, "0"); // "01"
 	const hours = String(date.getHours()).padStart(2, "0");
